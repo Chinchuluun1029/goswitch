@@ -1,0 +1,33 @@
+<mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Хувиргах Койнууд</mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-grid-list cols="5" rowHeight="250px">
+        <mat-grid-tile colspan="2">   
+          <mat-form-field>
+            <mat-select placeholder="Choose coin">
+            <mat-option *ngFor="let coin of coins" [value]="coin.coinName.symbol">
+               {{coin.coinName.symbol}}
+            </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile><i class="material-icons">swap_horiz</i></mat-grid-tile>
+        <mat-grid-tile colspan="2">      
+          <mat-form-field>
+           <mat-select placeholder="Choose coin">
+            <mat-option *ngFor="let coin of coins" [value]="coin.coinName.symbol">
+             {{coin.coinName.symbol}}
+            </mat-option>
+           </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" class="convert-btn">Хөрвүүлэх</button>
+    </mat-card-actions>
+  </mat-card>

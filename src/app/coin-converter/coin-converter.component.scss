@@ -1,0 +1,67 @@
+  .mat-card {
+      margin: 20%;
+      margin-top: 200px;
+  }
+
+  #title {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    color: #FFF;
+    text-align: center;
+    font-family: "Comfortaa", sans-serif;
+    font-weight: 300;
+    font-size: 50px;
+    letter-spacing: 10px;
+    margin-top: -60px;
+    padding-left: 10px;
+  }
+  #title span {
+    background: -webkit-linear-gradient(white, #38495a);
+    -webkit-text-fill-color: transparent;
+  }
+  
+  @keyframes animStar {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-2000px);
+    }
+  }
+  .mat-card {
+    min-width: 400px;
+    max-width: 600px;
+    top: 15%;
+    margin: 0 30%;
+  }
+  
+  mat-card-header.mat-card-header {
+      padding: 0 27.5%;
+  }
+  mat-card-title.mat-card-title {
+    min-width: 300px;
+    font-size: 24px;
+    font-family: Comfortaa, sans-serif;
+    color: #58595b;
+  }
+  .material-icons {
+    font-size: 48px;
+    color: #ed1c24;
+  }
+  .convert-btn {
+    background-color: #ff4646;
+    width: 330px;
+    height: 60px;
+  }
+  .mat-card-actions {
+    margin: 0 20%;
+  }
+  .mat-button {
+    background-color: #bcbec0;
+    color: white;
+  }
+  .http {
+    height: 500px;
+  }

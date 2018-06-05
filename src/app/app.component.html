@@ -1,21 +1,64 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+  <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">GoSwitch</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a>About us</a></li>
+          <li><a>Components</a></li>
+          <li><a>JavaScript</a></li>
+        </ul>
+      </div>
+    </nav>
 
-<router-outlet></router-outlet>
+<div class="stars">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>Хувиргах Койнууд</mat-card-title>
+          <mat-card-subtitle>
+            <ng-container>
+              <p>1 {{selectedCoin1}} = {{rateArray}} {{selectedCoin2}}</p>
+            </ng-container>
+            <mat-list role='list'>
+              <mat-list-item>Min Limit: <br> {{minLimitArray | number: '1.2-5'}} {{selectedCoin1}}</mat-list-item>
+              <mat-list-item>Max Limit: <br>{{limitArray | number: '1.2-5'}} {{selectedCoin1}}</mat-list-item>
+              <mat-list-item>Miner Fee:  <br> {{minerFeeArray}} {{selectedCoin2}}</mat-list-item>
+            </mat-list>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-grid-list cols="5" rowHeight="250px">
+            <mat-grid-tile colspan="2">   
+                <mat-form-field>
+                    <mat-select (setSelectedCoin1)="selectedCoin1" [(value)]="selectedCoin1" placeholder="Choose coin">
+                      <ng-container *ngFor="let coin of coinsArray">              
+                        <mat-option *ngIf="coin.status.length < 10" [(value)]='coin.symbol'>
+                          <ng-container> <!-- <img src={{coin.imageSmall}}> --> {{coin.symbol}}</ng-container>
+                        </mat-option>
+                      </ng-container>     
+                    </mat-select>
+                  </mat-form-field>   
+            </mat-grid-tile>
+            <mat-grid-tile><i class="material-icons">swap_horiz</i></mat-grid-tile>
+            <mat-grid-tile colspan="2">
+                <mat-form-field>
+                    <mat-select (setSelectedCoin2)="selectedCoin2" [(value)]="selectedCoin2" (ngModelChange)="getrate($event)" placeholder="Choose coin">
+                      <ng-container *ngFor="let coin of coinsArray">
+                        <ng-container *ngIf="coin.symbol !== selectedCoin1">              
+                        <mat-option *ngIf="coin.status.length < 10" [value]="coin.symbol">
+                          <ng-container [attr.disabled]="valid == true ? true : null" ><!-- <img src={{coin.imageSmall}}> --> {{coin.symbol}}</ng-container>
+                        </mat-option>
+                      </ng-container>
+                      </ng-container>     
+                    </mat-select>
+                  </mat-form-field>      
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" class="convert-btn" (click)="openDialog()">Хөрвүүлэх</button>
+        </mat-card-actions>
+      </mat-card>
+      
+</div>
