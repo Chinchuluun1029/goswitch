@@ -13,6 +13,7 @@ import {ConvertDialogComponent} from "./convert-dialog/convert-dialog.component"
 import {MatDialogModule} from '@angular/material/dialog';
 import {OnDestroy} from '@angular/core';
 import { CalcDepositValueService } from 'src/app/calc-deposit-value.service';
+import { SimpleChange } from '@angular/core/src/change_detection/change_detection_util';
 
 
 @Component({
@@ -74,15 +75,22 @@ export class AppComponent implements DoCheck {
     this.calcDepositValue();
   }
 
+
   changeDetected: boolean = false;
   oldSelectedCoin1 = this.coinInfoService.selectedCoin1;
   oldSelectedCoin2 = this.coinInfoService.selectedCoin2;
+  oldWithdrawalValue = this.coinInfoService.withdrawalValue;
   ngDoCheck(){
     if (this.selectedCoin1 !== this.oldSelectedCoin1 || this.selectedCoin2 !== this.oldSelectedCoin2) {
       // console.log('ngDoCheck is called...');
       this.changeDetected = true;
       this.oldSelectedCoin1 = this.selectedCoin1;
       this.oldSelectedCoin2 = this.selectedCoin2;
+    }
+
+    if(this.oldWithdrawalValue !== this.coinInfoService.withdrawalValue){
+      this.changeDetected = true;
+      this.oldWithdrawalValue = this.coinInfoService.withdrawalValue;
     }
 
     if(this.changeDetected) {

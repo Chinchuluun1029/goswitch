@@ -30,25 +30,24 @@ export class ConvertDialogComponent implements DoCheck {
     name: string = "";
     receivingWallet: string = "";
     sendingWallet: string = "";
-    depositValue: number = 8;
+    depositValue: number;
     oldDepositValue: number = this.depositValue;
     changeDetected: boolean = false;
-    withdrawalValue: number;
+    withdrawalValue: number = 5;
+
+    
     //TODO: change multiplier by the shapeshift rate
     calcDepositValue(): void {
-      // console.log(this.getrate)
-      this.withdrawalValue = this.depositValue * this.rateArray;
-    }
-    ngOnInit(){
-      console.log('on init initialised');
+      this.depositValue = this.withdrawalValue * 6;
     }
     ngDoCheck(){
         if(this.oldDepositValue !== this.depositValue) {
           this.changeDetected = true;
-          console.log("Hello there")
         }
         if(this.changeDetected){
-          console.log('Change detected to true')
+          this.calcDepositValue();
+          console.log('Change detected to true');
+          this.oldDepositValue = this.depositValue;
         }
     }
 
