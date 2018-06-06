@@ -1,8 +1,9 @@
-<h2>Шилжүүлэх: {{data.selectedCoin1}}</h2>
-<h2>Хүлээн авах: {{data.selectedCoin2}}</h2>
-  <input matInput (setWithdrawalValue)="withdrawalValue" placeholder="Tanii shiljuuleh hemjee" [(value)]="withdrawalValue" class='withdrawalValue'>
-  <h3>{{depositValue}}</h3>
-  <input matInput placeholder="Tanii avah hemjee" [(value)]="depositValue" class="depositValue">
-  <input matInput (setSendingWallet)="sendingWallet" [(value)]="sendingWallet" placeholder="Койн явуулах данс">
-  <input matInput placeholder="Хүлээн авах данс" [(value)]="receivingWallet">
-<button mat-raised-button type="submit" (click)="sendCoins()">CLICK TO SUBMIT</button>
+<p>Шилжүүлэх: {{data.selectedCoin1}}</p>
+<p>Хүлээн авах: {{data.selectedCoin2}}</p>
+<form #addressForm="ngForm" (ngSubmit)="makeOrder(addressForm)" novalidate>
+    <input name="receiveAddress" ngModel required #receiveAddress="ngModel">
+    <input name="sendAddress" ngModel required #sendAddress="ngModel">
+</form> 
+    <p *ngIf="receiveAddress.value">Receiving Address: {{data.selectedCoin1}} from {{ receiveAddress.value }}</p>
+    <p *ngIf="sendAddress.value">Sending Address: To {{data.selectedCoin2}} at {{ sendAddress.value }}</p>
+    <button mat-raised-button class="convert-btn" (click)="makeOrder(addressForm)">Make Order</button>

@@ -17,6 +17,9 @@ import {MatInputModule} from '@angular/material';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 
+import { FormsModule} from '@angular/forms';
+import {NgForm} from '@angular/forms';
+
 import {HttpClientModule} from '@angular/common/http';
 
 import { CoinsInfoComponent } from './coins-info/coins-info.component';
@@ -49,7 +52,8 @@ import { ConvertDialogComponent } from 'src/app/convert-dialog/convert-dialog.co
     MatInputModule,
     MatFormFieldModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    FormsModule
   ],
   exports: [ConvertDialogComponent],
   providers: [CoinInfoService],

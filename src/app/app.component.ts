@@ -121,7 +121,7 @@ export class AppComponent implements DoCheck {
     this.changeDetected = true;
   }
 
-  makeOrder(): void {
+  makeOrder(withdrawAddress, pair1, pair2, returnAddress): void {
     // if (!order) { return; }
     this.coinInfoService.makeOrder(
       {
@@ -133,11 +133,11 @@ export class AppComponent implements DoCheck {
         if(!result.error) {
 
         } else {
-          
+
         }
         console.log('Result in component:');
         console.log(result);
-        //custome code
+        //custom code
       });
   }
 }

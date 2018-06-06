@@ -7,7 +7,9 @@ import {CoinInfoService} from '../coin-info.service';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { Input, Output } from '@angular/core';
-import {DoCheck} from '@angular/core/src/metadata/lifecycle_hooks';
+import { NgForm } from '@angular/forms'
+import {Observable, of} from 'rxjs';
+// import {DoCheck} from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-convert-dialog',
@@ -15,41 +17,73 @@ import {DoCheck} from '@angular/core/src/metadata/lifecycle_hooks';
   styleUrls: ['./convert-dialog.component.scss'],
   providers: [CoinInfoService]
 })
-export class ConvertDialogComponent implements DoCheck {
+export class ConvertDialogComponent {
+  receiveAddress= '';
+  sendAddress= '';
+  pair1 = 'ltc';
+  pair2 = 'btc';
 
+
+  makeOrder(addressForm: NgForm) {
+    // if (!order) { return; }
+
+    this.receiveAddress = addressForm.value.receiveAddress;
+    this.sendAddress = addressForm.value.sendAddress;
+
+    console.log(this.data.selectedCoin1)
+    console.log(this.data.selectedCoin2)
+
+    this.coinInfoService.makeOrder(
+      {
+        "amount": 0.5,
+        "withdrawal": this.receiveAddress,
+        "pair": this.data.selectedCoin1 + "_" + this.data.selectedCoin2,
+        "returnAddress": this.sendAddress
+      } )
+      .subscribe(result => {
+        // if(!result.error) {
+
+        // } else {
+
+        // }
+        console.log('Result in component:');
+        console.log(result);
+        //custom code
+      });
+  }
+
+
+  private handleError<T> (operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      console.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
 
   constructor(
     private coinInfoService: CoinInfoService,
     public dialogRef: MatDialogRef<ConvertDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { 
-      this.calcDepositValue();
-    }
+    @Inject(MAT_DIALOG_DATA) public data: any) {}
     rateArray = this.coinInfoService.rateArray;
     getrate = this.coinInfoService.getrate;
 
-    name: string = "";
-    receivingWallet: string = "";
-    sendingWallet: string = "";
-    depositValue: number;
-    oldDepositValue: number = this.depositValue;
-    changeDetected: boolean = false;
-    withdrawalValue: number = 5;
-
-    
-    //TODO: change multiplier by the shapeshift rate
-    calcDepositValue(): void {
-      this.depositValue = this.withdrawalValue * 6;
-    }
-    ngDoCheck(){
-        if(this.oldDepositValue !== this.depositValue) {
-          this.changeDetected = true;
-        }
-        if(this.changeDetected){
-          this.calcDepositValue();
-          console.log('Change detected to true');
-          this.oldDepositValue = this.depositValue;
-        }
-    }
+    // ngDoCheck(){
+    //     if(this.oldDepositValue !== this.depositValue) {
+    //       this.changeDetected = true;
+    //     }
+    //     if(this.changeDetected){
+    //       this.calcDepositValue();
+    //       console.log('Change detected to true');
+    //       this.oldDepositValue = this.depositValue;
+    //     }
+    // }
 
     
     // ngDoCheck(){
@@ -72,22 +106,6 @@ export class ConvertDialogComponent implements DoCheck {
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-
-  @Input()
-  get getSendingWallet() {
-    return this.sendingWallet;
-  }
-  @Output() 
-  set setSendingWallet(value1) {
-    this.sendingWallet = value1;
-    this.sendCoins();
-  }
-
-
-  sendCoins(): void {
-    this.sendingWallet = this.setSendingWallet;
-    console.log(this.sendingWallet)
   }
 
 }
