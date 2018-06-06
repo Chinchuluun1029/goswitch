@@ -1,6 +1,7 @@
 <h2>Шилжүүлэх: {{data.selectedCoin1}}</h2>
 <h2>Хүлээн авах: {{data.selectedCoin2}}</h2>
   <input matInput (setWithdrawalValue)="withdrawalValue" placeholder="Tanii shiljuuleh hemjee" [(value)]="withdrawalValue" class='withdrawalValue'>
+  <h3>{{depositValue}}</h3>
   <input matInput placeholder="Tanii avah hemjee" [(value)]="depositValue" class="depositValue">
   <input matInput (setSendingWallet)="sendingWallet" [(value)]="sendingWallet" placeholder="Койн явуулах данс">
   <input matInput placeholder="Хүлээн авах данс" [(value)]="receivingWallet">

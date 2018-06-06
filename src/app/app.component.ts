@@ -120,6 +120,25 @@ export class AppComponent implements DoCheck {
     this.selectedCoin1 = this.oldSelectedCoin1;
     this.changeDetected = true;
   }
-  
+
+  makeOrder(): void {
+    // if (!order) { return; }
+    this.coinInfoService.makeOrder(
+      {
+        "withdrawal":"Lfhs2X5zZP8pW8TT42PQwZeSf4cBtYgkon",
+        "pair":"ltc_btc",
+        "returnAddress":"1Jg6hzPUzKbwKiUDo1UWLZYuXuEdbqwX9v"
+      })
+      .subscribe(result => {
+        if(!result.error) {
+
+        } else {
+          
+        }
+        console.log('Result in component:');
+        console.log(result);
+        //custome code
+      });
+  }
 }
 
