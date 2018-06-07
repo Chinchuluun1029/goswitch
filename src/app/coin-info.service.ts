@@ -61,18 +61,6 @@ export class CoinInfoService {
     this.selectedCoin2 = value2;
     this.getrate()
   }
-  //TODO: input and output for withdrawal value, change its function
-
-  @Input()
-  get getWithdrawalValue() {
-    return this.withdrawalValue;
-  }
-
-  @Output()
-  set setWithdrawalValue(value) {
-    this.withdrawalValue = value;
-    this.getrate()
-  }
 
   public getrate() {this.httpClient.get(this.URL + "/rate/" + this.selectedCoin1 + "_" + this.selectedCoin2).subscribe(
     (data: any) => {
@@ -127,12 +115,4 @@ export class CoinInfoService {
     };
   }
 
-  withdrawalValue: number = 9;
-  depositValue: number = 8;
-  public calcDepositValue(): void {
-    this.getrate();
-    // console.log(this.getrate)
-    // this.depositValue = 7;
-    console.log(this.depositValue)
-  }
 }

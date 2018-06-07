@@ -1,9 +1,13 @@
-<p>Шилжүүлэх: {{data.selectedCoin1}}</p>
-<p>Хүлээн авах: {{data.selectedCoin2}}</p>
+<p class="selectedCoins">Шилжүүлэх: {{data.selectedCoin1}}</p>
+<p class="selectedCoins">Хүлээн авах: {{data.selectedCoin2}}</p>
+<mat-list role='list'>
+    <mat-list-item>Доод хэмжээ: <br> {{minLimitArray | number: '1.2-5'}} {{selectedCoin1}}</mat-list-item>
+    <mat-list-item>Дээд хэмжээ: <br>{{limitArray | number: '1.2-5'}} {{selectedCoin1}}</mat-list-item>
+    <mat-list-item>Уурхайчны төлбөр:  <br> {{minerFeeArray}} {{selectedCoin2}}</mat-list-item>
+  </mat-list>
 <form #addressForm="ngForm" (ngSubmit)="makeOrder(addressForm)" novalidate>
-    <input name="receiveAddress" ngModel required #receiveAddress="ngModel">
-    <input name="sendAddress" ngModel required #sendAddress="ngModel">
-</form> 
-    <p *ngIf="receiveAddress.value">Receiving Address: {{data.selectedCoin1}} from {{ receiveAddress.value }}</p>
-    <p *ngIf="sendAddress.value">Sending Address: To {{data.selectedCoin2}} at {{ sendAddress.value }}</p>
+    <input name="receiveAddress" ngModel required #receiveAddress="ngModel" placeholder="{{selectedCoin1}} шилжүүлэх хаяг">
+    <input name="sendAddress" ngModel required #sendAddress="ngModel" placeholder="{{selectedCoin2}} авах хаяг">
+</form>
+
     <button mat-raised-button class="convert-btn" (click)="makeOrder(addressForm)">Make Order</button>

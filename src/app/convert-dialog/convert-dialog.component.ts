@@ -9,7 +9,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { Input, Output } from '@angular/core';
 import { NgForm } from '@angular/forms'
 import {Observable, of} from 'rxjs';
-// import {DoCheck} from '@angular/core/src/metadata/lifecycle_hooks';
+import {HttpClient} from '@angular/common/http';
+import {DoCheck} from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-convert-dialog',
@@ -17,12 +18,10 @@ import {Observable, of} from 'rxjs';
   styleUrls: ['./convert-dialog.component.scss'],
   providers: [CoinInfoService]
 })
-export class ConvertDialogComponent {
+export class ConvertDialogComponent implements DoCheck {
   receiveAddress= '';
   sendAddress= '';
-  pair1 = 'ltc';
-  pair2 = 'btc';
-
+  coinsArray = [];
 
   makeOrder(addressForm: NgForm) {
     // if (!order) { return; }
@@ -30,12 +29,8 @@ export class ConvertDialogComponent {
     this.receiveAddress = addressForm.value.receiveAddress;
     this.sendAddress = addressForm.value.sendAddress;
 
-    console.log(this.data.selectedCoin1)
-    console.log(this.data.selectedCoin2)
-
     this.coinInfoService.makeOrder(
       {
-        "amount": 0.5,
         "withdrawal": this.receiveAddress,
         "pair": this.data.selectedCoin1 + "_" + this.data.selectedCoin2,
         "returnAddress": this.sendAddress
@@ -69,43 +64,77 @@ export class ConvertDialogComponent {
 
   constructor(
     private coinInfoService: CoinInfoService,
+    private httpClient: HttpClient,
     public dialogRef: MatDialogRef<ConvertDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
-    rateArray = this.coinInfoService.rateArray;
-    getrate = this.coinInfoService.getrate;
-
-    // ngDoCheck(){
-    //     if(this.oldDepositValue !== this.depositValue) {
-    //       this.changeDetected = true;
-    //     }
-    //     if(this.changeDetected){
-    //       this.calcDepositValue();
-    //       console.log('Change detected to true');
-    //       this.oldDepositValue = this.depositValue;
-    //     }
-    // }
-
-    
-    // ngDoCheck(){
-    //   if (this.selectedCoin1 !== this.oldSelectedCoin1 || this.selectedCoin2 !== this.oldSelectedCoin2) {
-    //     // console.log('ngDoCheck is called...');
-    //     this.changeDetected = true;
-    //     this.oldSelectedCoin1 = this.selectedCoin1;
-    //     this.oldSelectedCoin2 = this.selectedCoin2;
-    //   }
-  
-    //   if(this.changeDetected) {
-    //     console.log("Change detected...");
-    //     this.getrate();
-    //     this.getLimit();
-    //     this.getMinerFee();
-    //     this.getMinLimit();
-    //     this.changeDetected = false;
-    //   }
-    // }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  limitArray = this.coinInfoService.limitArray;
+  rateArray = this.coinInfoService.rateArray;
+
+  minerFeeArray = this.coinInfoService.minerFeeArray;
+  minLimitArray = this.coinInfoService.minLimitArray;
+
+  URL = this.coinInfoService.URL;
+  panelOpenState: boolean = false;
+  selectedCoin1 = this.coinInfoService.selectedCoin1;
+  selectedCoin2 = this.coinInfoService.selectedCoin2;
+
+  getrate = this.coinInfoService.getrate;
+  getLimit = this.coinInfoService.getLimit;
+  getMinerFee = this.coinInfoService.getMinerFee;
+  getMinLimit = this.coinInfoService.getMinLimit;
+
+  // Calling functions from coinInfoService
+  public getcoins = this.httpClient.get(this.URL + "/getcoins").subscribe(
+    (data:any[]) => {
+      data = Object.keys(data).map(i => data[i])
+        for( var j = 0; j < data.length; j++) {
+          if (data[j].status === "available") {
+            let coinNamesArray = [];
+            coinNamesArray.push(data[j].symbol)
+            let coinNames = coinNamesArray.toString();
+          }
+        }
+
+       this.coinsArray = data;
+    }
+  );
+
+
+  ngOnInit() {
+    this.selectedCoin1 = this.data.selectedCoin1;
+    this.selectedCoin2 = this.data.selectedCoin2;
+    this.getcoins;
+    this.getrate();
+    this.getLimit();
+    this.getMinerFee();
+    this.getMinLimit();
+  }
+
+
+  changeDetected: boolean = false;
+  oldSelectedCoin1 = this.coinInfoService.selectedCoin1;
+  oldSelectedCoin2 = this.coinInfoService.selectedCoin2;
+
+  ngDoCheck(){
+    if (this.selectedCoin1 !== this.oldSelectedCoin1 || this.selectedCoin2 !== this.oldSelectedCoin2) {
+      // console.log('ngDoCheck is called...');
+      this.changeDetected = true;
+      this.oldSelectedCoin1 = this.selectedCoin1;
+      this.oldSelectedCoin2 = this.selectedCoin2;
+    }
+
+    if(this.changeDetected) {
+      console.log("Change detected...");
+      this.getrate();
+      this.getLimit();
+      this.getMinerFee();
+      this.getMinLimit();
+      this.changeDetected = false;
+    }
+  }
 }

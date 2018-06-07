@@ -41,8 +41,6 @@ export class AppComponent implements DoCheck {
   getMinerFee = this.coinInfoService.getMinerFee;
   getMinLimit = this.coinInfoService.getMinLimit;
 
-  calcDepositValue = this.coinInfoService.calcDepositValue;
-
   constructor (public coinInfoService: CoinInfoService,
                private _dialog: MatDialog,
                public dialog: MatDialog,
@@ -72,14 +70,12 @@ export class AppComponent implements DoCheck {
     this.getLimit();
     this.getMinerFee();
     this.getMinLimit();
-    this.calcDepositValue();
   }
 
 
   changeDetected: boolean = false;
   oldSelectedCoin1 = this.coinInfoService.selectedCoin1;
   oldSelectedCoin2 = this.coinInfoService.selectedCoin2;
-  oldWithdrawalValue = this.coinInfoService.withdrawalValue;
   ngDoCheck(){
     if (this.selectedCoin1 !== this.oldSelectedCoin1 || this.selectedCoin2 !== this.oldSelectedCoin2) {
       // console.log('ngDoCheck is called...');
@@ -87,12 +83,7 @@ export class AppComponent implements DoCheck {
       this.oldSelectedCoin1 = this.selectedCoin1;
       this.oldSelectedCoin2 = this.selectedCoin2;
     }
-
-    if(this.oldWithdrawalValue !== this.coinInfoService.withdrawalValue){
-      this.changeDetected = true;
-      this.oldWithdrawalValue = this.coinInfoService.withdrawalValue;
-    }
-
+    
     if(this.changeDetected) {
       console.log("Change detected...");
       this.getrate();
@@ -103,13 +94,12 @@ export class AppComponent implements DoCheck {
     }
   }
 
-  select: any = "HELLO";
 
     // Dialog Module
   openDialog(): void {
     let dialogRef = this.dialog.open(ConvertDialogComponent, {
       width: '500px',
-      data: { selectedCoin1: this.selectedCoin1, selectedCoin2: this.selectedCoin2, select: this.select }
+      data: { selectedCoin1: this.selectedCoin1, selectedCoin2: this.selectedCoin2 }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -119,26 +109,6 @@ export class AppComponent implements DoCheck {
     console.log('openDialog activated..')
     this.selectedCoin1 = this.oldSelectedCoin1;
     this.changeDetected = true;
-  }
-
-  makeOrder(withdrawAddress, pair1, pair2, returnAddress): void {
-    // if (!order) { return; }
-    this.coinInfoService.makeOrder(
-      {
-        "withdrawal":"Lfhs2X5zZP8pW8TT42PQwZeSf4cBtYgkon",
-        "pair":"ltc_btc",
-        "returnAddress":"1Jg6hzPUzKbwKiUDo1UWLZYuXuEdbqwX9v"
-      })
-      .subscribe(result => {
-        if(!result.error) {
-
-        } else {
-
-        }
-        console.log('Result in component:');
-        console.log(result);
-        //custom code
-      });
   }
 }
 
